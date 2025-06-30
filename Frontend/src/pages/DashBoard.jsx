@@ -7,6 +7,8 @@ import {
   Send,
   User,
   Bot,
+  Menu,
+  Trash,
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -21,6 +23,7 @@ const PDFDashboard = () => {
   const [userQuestion, setUserQuestion] = useState("");
   const [isUploadingPDF, setIsUploadingPDF] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const fileInputRef = useRef(null);
   const chatContainerRef = useRef(null);
 
@@ -159,6 +162,7 @@ const PDFDashboard = () => {
   const openPDFChat = (pdf) => {
     setSelectedPDF(pdf);
     setCurrentView("chat");
+    setIsSidebarOpen(false);
 
     if (!chatMessages[pdf.id]) {
       setChatMessages((prev) => ({
@@ -255,13 +259,24 @@ const PDFDashboard = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   const Sidebar = () => (
-    <div className="w-80 bg-slate-900 text-white h-screen flex flex-col">
-      <div className="p-6 border-b border-slate-700">
+    <div
+      className={`fixed inset-y-0 left-0 z-50 w-80 bg-slate-900 text-white flex flex-col transform transition-transform duration-300 md:w-80 md:static md:transform-none ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      }`}
+    >
+      <div className="p-6 border-b border-slate-700 flex items-center justify-between">
         <h1 className="text-xl font-bold flex items-center gap-2">
           <FileText className="w-6 h-6" />
           PDF Dashboard
         </h1>
+        <button onClick={toggleSidebar} className="md:hidden">
+          <X className="w-6 h-6" />
+        </button>
       </div>
 
       <div className="p-6 border-b border-slate-700">
@@ -328,9 +343,9 @@ const PDFDashboard = () => {
                         e.stopPropagation();
                         deletePDF(pdf.id);
                       }}
-                      className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400 transition-colors"
+                      className=" text-slate-200 hover:text-red-400 transition-colors"
                     >
-                      <X className="w-4 h-4" />
+                      <Trash className="w-4 h-4" />
                     </button>
                   </div>
                   <div className="flex items-center gap-2 mt-3 text-xs text-blue-400">
@@ -350,27 +365,34 @@ const PDFDashboard = () => {
     if (!selectedPDF) return null;
 
     return (
-      <div className="flex-1 flex flex-col bg-white">
+      <div className="flex-1 flex flex-col bg-white w-screen h-screen">
         <div className="bg-white border-b border-slate-200 p-4 flex items-center gap-3">
-          <button
-            onClick={() => {
-              setCurrentView("dashboard");
-              setSelectedPDF(null);
-            }}
-            className="text-slate-600 hover:text-slate-900"
-          >
-            ← Back
-          </button>
-          <FileText className="w-6 h-6 text-red-500" />
-          <div>
-            <h2 className="font-semibold text-slate-900">{selectedPDF.name}</h2>
-            <p className="text-sm text-slate-500">PDF Chat Assistant</p>
+          <div className="flex items-center gap-3 flex-1">
+            <button
+              onClick={() => {
+                setCurrentView("dashboard");
+                setSelectedPDF(null);
+              }}
+              className="text-slate-600 hover:text-slate-900"
+            >
+              ← Back
+            </button>
+            <FileText className="w-6 h-6 text-red-500" />
+            <div>
+              <h2 className="font-semibold truncate max-w-[150px] text-slate-900">
+                {selectedPDF.name}
+              </h2>
+              <p className="text-sm text-slate-500">PDF Chat Assistant</p>
+            </div>
           </div>
+          <button onClick={toggleSidebar} className="md:hidden">
+            <Menu className="w-6 h-6 text-slate-600" />
+          </button>
         </div>
 
         <div
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto p-6 space-y-4"
+          className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"
         >
           {(chatMessages[selectedPDF.id] || []).map((message) => (
             <div
@@ -386,12 +408,12 @@ const PDFDashboard = () => {
               )}
 
               <div
-                className={`max-w-2xl ${
+                className={`max-w-[80%] sm:max-w-2xl ${
                   message.type === "user" ? "order-first" : ""
                 }`}
               >
                 <div
-                  className={`rounded-lg p-4 ${
+                  className={`rounded-lg p-3 sm:p-4 ${
                     message.type === "user"
                       ? "bg-blue-600 text-white ml-auto"
                       : "bg-slate-100 text-slate-900"
@@ -420,14 +442,14 @@ const PDFDashboard = () => {
               onChange={(e) => setUserQuestion(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask a question about this PDF..."
-              className="flex-1 border border-slate-300 rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 border border-slate-300 rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
               rows={2}
               disabled={isSendingMessage}
             />
             <button
               onClick={sendMessage}
               disabled={!userQuestion.trim() || isSendingMessage}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white px-6 py-3 rounded-lg flex items-center justify-center transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white px-4 sm:px-6 py-3 rounded-lg flex items-center justify-center transition-colors"
             >
               <Send className="w-5 h-5" />
             </button>
@@ -438,13 +460,13 @@ const PDFDashboard = () => {
   }, [selectedPDF, chatMessages, userQuestion, isSendingMessage]);
 
   const DashboardView = () => (
-    <div className="flex-1 flex items-center justify-center bg-slate-50">
-      <div className="text-center">
-        <FileText className="w-24 h-24 text-slate-400 mx-auto mb-6" />
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">
+    <div className="flex-1 flex items-center justify-center bg-slate-50 w-screen p-4 sm:p-6">
+      <div className="text-center max-w-md">
+        <FileText className="w-16 sm:w-24 h-16 sm:h-24 text-slate-400 mx-auto mb-6" />
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
           Welcome to PDF Dashboard
         </h2>
-        <p className="text-slate-600 mb-8 max-w-md">
+        <p className="text-slate-600 mb-8 text-sm sm:text-base">
           Upload PDF files using the sidebar and click on any PDF to start a
           conversation about its content.
         </p>
@@ -455,14 +477,28 @@ const PDFDashboard = () => {
             the sidebar to start chatting.
           </p>
         )}
+        <button
+          onClick={toggleSidebar}
+          className="md:hidden mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
+        >
+          Open Sidebar
+        </button>
       </div>
     </div>
   );
 
   return (
-    <div className="flex h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-slate-100">
       <Sidebar />
-      {currentView === "chat" && selectedPDF ? ChatScreen : <DashboardView />}
+      <div className="flex-1 flex flex-col">
+        {currentView === "chat" && selectedPDF ? ChatScreen : <DashboardView />}
+      </div>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
     </div>
   );
 };

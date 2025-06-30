@@ -228,7 +228,6 @@ const generatePdfResponse = async (req, res) => {
     let inputs = {
       question: trimmedQuestion,
     };
-
     const result = await graph.invoke(inputs);
 
     if (result.context && result.context.length > 0) {
