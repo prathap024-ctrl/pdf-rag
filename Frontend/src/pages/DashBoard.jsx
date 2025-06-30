@@ -265,7 +265,7 @@ const PDFDashboard = () => {
 
   const Sidebar = () => (
     <div
-      className={`fixed inset-y-0 left-0 z-50 w-80 bg-slate-900 text-white flex flex-col transform transition-transform duration-300 md:w-80 md:static md:transform-none ${
+      className={`absolute inset-y-0 left-0 z-50 min-w-80 bg-slate-900 text-white flex flex-col transform transition-transform duration-300 md:w-80 md:static md:transform-none ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       }`}
     >
@@ -365,7 +365,7 @@ const PDFDashboard = () => {
     if (!selectedPDF) return null;
 
     return (
-      <div className="flex-1 flex flex-col bg-white w-screen h-screen">
+      <div className="flex-1 flex flex-col bg-white w-auto h-screen">
         <div className="bg-white border-b border-slate-200 p-4 flex items-center gap-3">
           <div className="flex items-center gap-3 flex-1">
             <button
@@ -460,7 +460,7 @@ const PDFDashboard = () => {
   }, [selectedPDF, chatMessages, userQuestion, isSendingMessage]);
 
   const DashboardView = () => (
-    <div className="flex-1 flex items-center justify-center bg-slate-50 w-screen p-4 sm:p-6">
+    <div className="flex-1 flex items-center justify-center bg-slate-50 w-auto p-4 sm:p-6">
       <div className="text-center max-w-md">
         <FileText className="w-16 sm:w-24 h-16 sm:h-24 text-slate-400 mx-auto mb-6" />
         <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
