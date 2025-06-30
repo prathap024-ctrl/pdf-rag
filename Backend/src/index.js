@@ -19,9 +19,9 @@ try {
 (async () => {
   try {
     const result = await db.execute(sql`SELECT 1`);
-    console.log("✅ Connected to DB:", result);
-  } catch (err) {
-    console.error("❌ DB Connection failed:", err);
+    console.log("✅ Connected to database:", result);
+  } catch (error) {
+    console.error("❌ DB Connection failed:", error);
   }
 })();
 
