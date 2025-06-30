@@ -76,7 +76,7 @@ const PDFDashboard = () => {
 
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URI}/api/pdf/load-pdf`,
+          `https://pdf-rag-ujdo.onrender.com/api/pdf/load-pdf`,
           formData,
           {
             headers: {
@@ -107,7 +107,7 @@ const PDFDashboard = () => {
     setIsUploadingPDF(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URI}/api/pdf/fetch-pdf`
+        `https://pdf-rag-ujdo.onrender.com/api/pdf/fetch-pdf`
       );
       const pdfData = Array.isArray(response.data?.message)
         ? response.data.message
@@ -145,7 +145,7 @@ const PDFDashboard = () => {
   const deletePDF = async (id) => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_URI}/api/pdf/delete-pdf/${id}`
+        `https://pdf-rag-ujdo.onrender.com/api/pdf/delete-pdf/${id}`
       );
       setUploadedPDFs((prev) => prev.filter((pdf) => pdf.id !== id));
       if (selectedPDF && selectedPDF.id === id) {
@@ -197,7 +197,7 @@ const PDFDashboard = () => {
     setIsSendingMessage(true);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URI}/api/pdf/pdf-response`,
+        `https://pdf-rag-ujdo.onrender.com/api/pdf/pdf-response`,
         {
           userQuestion,
           pdfId: selectedPDF.id,
