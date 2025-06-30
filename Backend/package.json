@@ -1,0 +1,47 @@
+{
+  "name": "python_practice",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "db:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "start": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+  },
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
+    "@google-cloud/vertexai": "^1.10.0",
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/community": "^0.3.47",
+    "@langchain/core": "^0.3.61",
+    "@langchain/google-genai": "^0.2.13",
+    "@langchain/langgraph": "^0.3.5",
+    "@zilliz/milvus2-sdk-node": "^2.5.10",
+    "bcrypt": "^6.0.0",
+    "chromadb": "^3.0.5",
+    "cloudinary": "^2.7.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "drizzle-orm": "^0.44.2",
+    "express": "^5.1.0",
+    "faiss": "^1.0.0",
+    "faiss-node": "^0.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.3.29",
+    "mongoose": "^8.16.1",
+    "mongoose-aggregate-paginate-v2": "^1.1.4",
+    "multer": "^2.0.1",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "load_pdf" ADD COLUMN "size" integer NOT NULL;
