@@ -1,6 +1,8 @@
 //require('dotenv').config({path: "./env"})
 import dotenv from "dotenv";
 import { app } from "./app.js";
+import { sql } from "drizzle-orm";
+import { db } from "./db/db.js";
 
 dotenv.config({
   path: "./.env",
@@ -13,6 +15,15 @@ try {
 } catch (error) {
   console.error("Failed to start server!");
 }
+
+(async () => {
+  try {
+    const result = await db.execute(sql`SELECT 1`);
+    console.log("✅ Connected to DB:", result);
+  } catch (err) {
+    console.error("❌ DB Connection failed:", err);
+  }
+})();
 
 // import express from "express"
 // const app = express()
