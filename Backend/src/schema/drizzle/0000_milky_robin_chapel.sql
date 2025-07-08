@@ -1,6 +1,7 @@
 CREATE TABLE "load_pdf" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"filename" varchar(255) NOT NULL,
+	"size" integer NOT NULL,
 	"collection_name" text NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now()
 );
